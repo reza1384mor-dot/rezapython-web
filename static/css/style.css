@@ -2990,6 +2990,78 @@ a {
     display: block;
 }
 
+/* ============================================================
+   Studio-Grade Article Tables (Centered, Cyber-Glass & Responsive)
+   ============================================================ */
+.article-content-body table {
+    width: 100%;
+    max-width: 840px;
+    margin: 2.4rem auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: rgba(13, 18, 30, 0.75);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+    direction: rtl;
+    text-align: center;
+}
+
+.article-content-body thead {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.22) 0%, rgba(99, 102, 241, 0.18) 100%);
+}
+
+.article-content-body th {
+    padding: 1.15rem 1.25rem;
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center !important;
+    border-bottom: 2px solid rgba(56, 189, 248, 0.4);
+    letter-spacing: -0.01em;
+}
+
+.article-content-body td {
+    padding: 1.05rem 1.25rem;
+    font-size: 0.94rem;
+    color: var(--text-secondary);
+    text-align: center !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.article-content-body tr:last-child td {
+    border-bottom: none;
+}
+
+.article-content-body tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.article-content-body tbody tr:hover td {
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .article-content-body table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 1.6rem auto;
+    }
+    .article-content-body th,
+    .article-content-body td {
+        padding: 0.8rem 0.9rem;
+        font-size: 0.86rem;
+        white-space: nowrap;
+    }
+}
+
+
 /* Article Footer Tags */
 .article-footer-tags {
     margin-top: 2.5rem;

@@ -1,0 +1,27 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}تایید حذف پروژه{% endblock %}
+{% block header_title %}حذف پروژه{% endblock %}
+
+{% block content %}
+<div class="form-container-compact">
+    <div class="panel-section-card delete-card">
+        <div class="delete-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h2>آیا از حذف این پروژه اطمینان دارید؟</h2>
+        <p class="delete-target-title">« {{ project.title }} »</p>
+        <p class="delete-warning">این عملیات غیرقابل بازگشت است و پروژه از دیتابیس و نمایش سایت حذف خواهد شد.</p>
+
+        <form method="POST" class="delete-form-actions">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+                <i class="fa-solid fa-trash"></i> بله، حذف شود
+            </button>
+            <a href="{% url 'portfolio:panel_projects' %}" class="btn btn-glass">
+                انصراف و بازگشت
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

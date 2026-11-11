@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Rose to Violet/Emerald Gradient (Zero Blue!) -->
+    <linearGradient id="shieldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e"/>
+      <stop offset="50%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+
+    <!-- Dark Velvet Background Gradient -->
+    <linearGradient id="shieldBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1238"/>
+      <stop offset="100%" stop-color="#120b24"/>
+    </linearGradient>
+
+    <!-- Glowing Text Gradient -->
+    <linearGradient id="techGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+
+    <!-- Subtle Drop Shadow -->
+    <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#f43f5e" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Base Rounded Container -->
+  <rect width="64" height="64" rx="15" fill="#120b24"/>
+
+  <!-- Network Security Shield Outline -->
+  <path d="M32 8 C43 8 52 13 52 23 C52 38 42 49 32 56 C22 49 12 38 12 23 C12 13 21 8 32 8 Z"
+        fill="url(#shieldBg)"
+        stroke="url(#shieldBorder)"
+        stroke-width="2.6"
+        stroke-linejoin="round"
+        filter="url(#glowFilter)"/>
+
+  <!-- Left Code Bracket < (Sunset Rose) -->
+  <path d="M22 25 L16 30.5 L22 36" 
+        fill="none" 
+        stroke="#f43f5e" 
+        stroke-width="2.6" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- Right Code Bracket > (Violet) -->
+  <path d="M42 25 L48 30.5 L42 36" 
+        fill="none" 
+        stroke="#c084fc" 
+        stroke-width="2.6" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- Stylized Tech Letter "R" (Reza) in Center -->
+  <path d="M27 39 V22 H34 C36.8 22 38.8 23.6 38.8 26.2 C38.8 28.5 37.2 29.9 34.6 30.3 L39 39 H35.2 L31.4 31 H29.8 V39 H27 Z M29.8 28.4 H33.8 C35.2 28.4 36 27.6 36 26.2 C36 24.8 35.2 24 33.8 24 H29.8 V28.4 Z"
+        fill="url(#techGlow)"/>
+
+  <!-- Sunset Orange Security Pulse Dot -->
+  <circle cx="32" cy="46" r="2.2" fill="#f97316"/>
+</svg>

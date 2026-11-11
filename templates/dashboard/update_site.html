@@ -1,0 +1,116 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}صفحه آپدیت و ویرایش اطلاعات سایت{% endblock %}
+{% block header_title %}صفحه آپدیت و ویرایش اطلاعات سایت{% endblock %}
+
+{% block content %}
+<div class="update-container">
+    <div class="panel-card-header">
+        <div>
+            <h2><i class="fa-solid fa-pen-to-square"></i> صفحه آپدیت و تغییر محتوای سایت</h2>
+            <p class="subtitle">هر تغییری در این فرم ثبت کنید، بلافاصله در صفحه اصلی سایت اعمال خواهد شد.</p>
+        </div>
+        <div class="last-update">
+            <span>آخرین به‌روزرسانی:</span>
+            <strong>{{ settings.updated_at|date:"Y/m/d - H:i" }}</strong>
+        </div>
+    </div>
+
+    <form method="POST" class="update-form">
+        {% csrf_token %}
+
+        <!-- Card 1: Header & Bio -->
+        <div class="panel-section-card">
+            <h3 class="section-heading"><i class="fa-solid fa-user"></i> ۱. مشخصات عمومی و بخش هدر (Hero)</h3>
+            <div class="form-grid">
+                <div class="form-item">
+                    <label>{{ form.full_name.label }}</label>
+                    {{ form.full_name }}
+                    {% if form.full_name.errors %}<span class="field-error">{{ form.full_name.errors }}</span>{% endif %}
+                </div>
+                <div class="form-item">
+                    <label>{{ form.hero_badge.label }}</label>
+                    {{ form.hero_badge }}
+                </div>
+                <div class="form-item full-width">
+                    <label>{{ form.role_title.label }}</label>
+                    {{ form.role_title }}
+                </div>
+                <div class="form-item full-width">
+                    <label>{{ form.bio.label }}</label>
+                    {{ form.bio }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: About Section -->
+        <div class="panel-section-card">
+            <h3 class="section-heading"><i class="fa-solid fa-address-card"></i> ۲. محتوای بخش «درباره من»</h3>
+            <div class="form-grid">
+                <div class="form-item full-width">
+                    <label>{{ form.about_cs.label }}</label>
+                    {{ form.about_cs }}
+                </div>
+                <div class="form-item full-width">
+                    <label>{{ form.about_backend.label }}</label>
+                    {{ form.about_backend }}
+                </div>
+                <div class="form-item full-width">
+                    <label>{{ form.about_security.label }}</label>
+                    {{ form.about_security }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Contact & Telegram Channel -->
+        <div class="panel-section-card">
+            <h3 class="section-heading"><i class="fa-solid fa-share-nodes"></i> ۳. اطلاعات ارتباطی، کانال تلگرام و شبکه‌ها</h3>
+            <div class="form-grid">
+                <div class="form-item">
+                    <label>{{ form.email.label }}</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-item">
+                    <label>{{ form.telegram_id.label }}</label>
+                    {{ form.telegram_id }}
+                </div>
+                <div class="form-item">
+                    <label>{{ form.telegram_bot_username.label }}</label>
+                    {{ form.telegram_bot_username }}
+                </div>
+                <div class="form-item">
+                    <label>{{ form.github_url.label }}</label>
+                    {{ form.github_url }}
+                </div>
+                <div class="form-item">
+                    <label>{{ form.telegram_channel_status.label }}</label>
+                    {{ form.telegram_channel_status }}
+                </div>
+                <div class="form-item full-width">
+                    <label>{{ form.telegram_channel_title.label }}</label>
+                    {{ form.telegram_channel_title }}
+                </div>
+                <div class="form-item full-width">
+                    <label>{{ form.telegram_channel_desc.label }}</label>
+                    {{ form.telegram_channel_desc }}
+                </div>
+                <div class="form-item full-width">
+                    <label>{{ form.telegram_channel_url.label }}</label>
+                    {{ form.telegram_channel_url }}
+                    <small class="field-hint">اگر کانال را راه‌اندازی کردید، لینک مستقیم را اینجا قرار دهید تا دکمه ورود برای کاربران فعال شود.</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-actions-bar">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fa-solid fa-floppy-disk"></i> ذخیره و انتشار تغییرات در سایت
+            </button>
+            <a href="{% url 'portfolio:home' %}" target="_blank" class="btn btn-glass">
+                <i class="fa-solid fa-eye"></i> مشاهده سایت زنده
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

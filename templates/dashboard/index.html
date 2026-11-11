@@ -1,0 +1,130 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}پیش‌خوان پنل مدیریت{% endblock %}
+{% block header_title %}پیش‌خوان و مدیریت پیام‌ها{% endblock %}
+
+{% block content %}
+<div class="dashboard-overview">
+    <!-- Quick Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon message-icon">
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div class="stat-data">
+                <span class="stat-num">{{ stats.total_messages }}</span>
+                <span class="stat-title">کل پیام‌های دریافتی</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon unread-icon">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <div class="stat-data">
+                <span class="stat-num">{{ stats.unread_messages }}</span>
+                <span class="stat-title">پیام‌های خوانده‌نشده</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon project-icon">
+                <i class="fa-solid fa-cubes"></i>
+            </div>
+            <div class="stat-data">
+                <span class="stat-num">{{ stats.total_projects }}</span>
+                <span class="stat-title">پروژه‌های ثبت‌شده</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon skill-icon">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <div class="stat-data">
+                <span class="stat-num">{{ stats.total_skills }}</span>
+                <span class="stat-title">مهارت‌های ثبت‌شده</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(192, 132, 252, 0.15); color: var(--secondary);">
+                <i class="fa-solid fa-newspaper"></i>
+            </div>
+            <div class="stat-data">
+                <span class="stat-num">{{ stats.total_articles }}</span>
+                <span class="stat-title">مقالات منتشر شده</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Action Banner -->
+    <div class="quick-action-banner">
+        <div class="action-info">
+            <h3><i class="fa-solid fa-sparkles"></i> ویرایش سریع محتوای سایت</h3>
+            <p>می‌توانید بیوگرافی، عناوین، راه‌های ارتباطی و کانال تلگرام را در صفحه آپدیت تغییر دهید.</p>
+        </div>
+        <div class="action-btn" style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+            <a href="{% url 'portfolio:panel_article_create' %}" class="btn btn-outline">
+                <i class="fa-solid fa-feather-pointed"></i> انتشار مقاله جدید
+            </a>
+            <a href="{% url 'portfolio:panel_update_settings' %}" class="btn btn-primary">
+                <i class="fa-solid fa-pen-to-square"></i> رفتن به صفحه آپدیت سایت
+            </a>
+        </div>
+    </div>
+
+    <!-- Messages Table Card -->
+    <div class="panel-section-card">
+        <div class="panel-card-header">
+            <h3><i class="fa-solid fa-inbox"></i> آخرین پیام‌های دریافتی از کاربران</h3>
+        </div>
+
+        <div class="table-responsive">
+            <table class="panel-table">
+                <thead>
+                    <tr>
+                        <th>فرستنده</th>
+                        <th>ایمیل</th>
+                        <th>موضوع</th>
+                        <th>متن پیام</th>
+                        <th>تاریخ</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for msg in recent_messages %}
+                    <tr class="{% if not msg.is_read %}unread-row{% endif %}">
+                        <td><strong>{{ msg.name }}</strong></td>
+                        <td><a href="mailto:{{ msg.email }}" class="table-link">{{ msg.email }}</a></td>
+                        <td>{{ msg.subject|default:"بدون موضوع" }}</td>
+                        <td class="msg-snippet" title="{{ msg.message }}">{{ msg.message|truncatewords:10 }}</td>
+                        <td class="text-mono">{{ msg.created_at|date:"Y/m/d H:i" }}</td>
+                        <td>
+                            {% if msg.is_read %}
+                            <span class="badge-status read">خوانده شده</span>
+                            {% else %}
+                            <span class="badge-status unread">جدید</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="POST" action="{% url 'portfolio:panel_toggle_message' msg.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-action" style="background:none;border:none;cursor:pointer;" title="تغییر وضعیت خوانده شدن">
+                                    <i class="fa-solid {% if msg.is_read %}fa-envelope{% else %}fa-envelope-open{% endif %}"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="empty-table">تاکنون پیامی از فرم تماس ارسال نشده است.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

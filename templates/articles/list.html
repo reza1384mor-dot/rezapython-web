@@ -1,0 +1,257 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="emerald">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#080d0a" id="meta-theme-color">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>مقالات و یادداشت‌های تخصصی | {{ settings.full_name }}</title>
+    <meta name="description" content="مجموعه مقالات تخصصی، آموزش‌ها و تجربیات {{ settings.full_name }} در زمینه پایتون، جنگو، امنیت شبکه و علوم کامپیوتر">
+    
+    <!-- Google Fonts: Vazirmatn & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Favicon (Zero Blue, Sunset & Violet) -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3.4">
+
+    <!-- SEO Canonical (Agent 8) -->
+    <link rel="canonical" href="https://rezapython.ir/articles/">
+</head>
+<body class="multi-page">
+
+    <!-- 3D Interactive WebGL Background Canvas -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Top Scroll Progress Bar -->
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Ambient Glow Backgrounds -->
+    <div class="glow-bg glow-1"></div>
+    <div class="glow-bg glow-2"></div>
+
+    <!-- Navigation Header -->
+    <header class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="{% url 'portfolio:home' %}" class="logo">
+                <span class="code-bracket">&lt;</span>
+                <span class="logo-text">Reza.dev</span>
+                <span class="code-bracket">/&gt;</span>
+            </a>
+
+            <nav class="nav-links" id="nav-links">
+                <a href="{% url 'portfolio:home' %}" class="nav-item">خانه</a>
+                <a href="{% url 'portfolio:home' %}#about" class="nav-item">درباره من</a>
+                <a href="{% url 'portfolio:home' %}#skills" class="nav-item">مهارت‌ها</a>
+                <a href="{% url 'portfolio:home' %}#projects" class="nav-item">پروژه‌ها</a>
+                <a href="{% url 'portfolio:articles_list' %}" class="nav-item active">مقالات</a>
+                <a href="{% url 'portfolio:home' %}#contact" class="nav-item">ارتباط</a>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Theme Switcher Dropdown -->
+                <div class="theme-switcher-wrapper">
+                    <button class="theme-btn" id="theme-toggle-btn" aria-label="تغییر تم سایت" title="تغییر رنگ و تم">
+                        <i class="fa-solid fa-palette"></i>
+                    </button>
+                    <div class="theme-dropdown" id="theme-dropdown">
+                        <button class="theme-option" data-theme-val="sunset">
+                            <span class="theme-color-dot dot-sunset"></span>
+                            <span>شفق نئونی / غروب</span>
+                        </button>
+                        <button class="theme-option" data-theme-val="light">
+                            <span class="theme-color-dot dot-light"></span>
+                            <span>تم سفید شیشه‌ای</span>
+                        </button>
+                        <button class="theme-option active" data-theme-val="emerald">
+                            <span class="theme-color-dot dot-emerald"></span>
+                            <span>سایبر زمردی</span>
+                        </button>
+                    </div>
+                </div>
+
+                <a href="{% url 'portfolio:home' %}#contact" class="btn btn-outline btn-sm">ارسال پیام</a>
+                
+                <button class="menu-toggle" id="menu-toggle" aria-label="منوی موبایل">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-main-content">
+        <div class="container">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs-bar">
+                <a href="{% url 'portfolio:home' %}"><i class="fa-solid fa-house"></i> خانه</a>
+                <span class="breadcrumb-separator"><i class="fa-solid fa-chevron-left"></i></span>
+                <span class="breadcrumb-current">مقالات و یادداشت‌های تخصصی</span>
+            </div>
+
+            <!-- Page Header -->
+            <section class="page-hero-header">
+                <div class="badge">
+                    <span class="badge-dot"></span>
+                    وبلاگ و یادداشت‌های تخصصی
+                </div>
+                <h1 class="page-title">
+                    مقالات، تحلیل‌ها و <span class="gradient-text">آموزش‌های فنی</span>
+                </h1>
+                <p class="page-subtitle">
+                    بررسی عمیق مفاهیم پایتون و جنگو، معماری امنیت وب و شبکه، الگوریتم‌ها و ساخت سامانه‌های باکیفیت
+                </p>
+
+                <!-- Search & Filters Container -->
+                <div class="articles-filter-box">
+                    <form method="GET" action="{% url 'portfolio:articles_list' %}" class="articles-search-form">
+                        {% if selected_cat and selected_cat != 'all' %}
+                        <input type="hidden" name="cat" value="{{ selected_cat }}">
+                        {% endif %}
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" name="q" value="{{ search_query }}" placeholder="جستجو در عنوان، متن یا برچسب مقالات..." class="articles-search-input">
+                            {% if search_query %}
+                            <a href="{% url 'portfolio:articles_list' %}{% if selected_cat and selected_cat != 'all' %}?cat={{ selected_cat }}{% endif %}" class="clear-search-btn" title="حذف فیلتر جستجو">
+                                <i class="fa-solid fa-xmark"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary search-btn">
+                            جستجو
+                        </button>
+                    </form>
+
+                    <!-- Category Filter Tabs -->
+                    <div class="category-filter-tabs">
+                        <a href="{% url 'portfolio:articles_list' %}{% if search_query %}?q={{ search_query }}{% endif %}" class="cat-tab {% if selected_cat == 'all' %}active{% endif %}">
+                            <i class="fa-solid fa-border-all"></i> همه مقالات
+                        </a>
+                        {% for cat_key, cat_label in categories %}
+                        <a href="{% url 'portfolio:articles_list' %}?cat={{ cat_key }}{% if search_query %}&q={{ search_query }}{% endif %}" class="cat-tab {% if selected_cat == cat_key %}active{% endif %}">
+                            {{ cat_label }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- Articles Grid -->
+            <section class="articles-archive-section">
+                <div class="articles-grid">
+                    {% for article in articles %}
+                    <article class="article-card tilt-card">
+                        <div class="article-card-header">
+                            <span class="article-cat-badge">
+                                <i class="{{ article.icon }}"></i> {{ article.get_category_display }}
+                            </span>
+                            <span class="article-reading-time">
+                                <i class="fa-regular fa-clock"></i> {{ article.reading_time }} دقیقه
+                            </span>
+                        </div>
+
+                        <h2 class="article-card-title">
+                            <a href="{% url 'portfolio:article_detail' article.slug %}">
+                                {{ article.title }}
+                            </a>
+                        </h2>
+
+                        <p class="article-card-summary">
+                            {{ article.summary }}
+                        </p>
+
+                        {% if article.get_tags_list %}
+                        <div class="article-card-tags">
+                            {% for tag in article.get_tags_list %}
+                            <span class="tag-chip">#{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <div class="article-card-footer">
+                            <div class="article-meta-info">
+                                <span class="meta-date">
+                                    <i class="fa-regular fa-calendar"></i> {{ article.created_at|date:"Y/m/d" }}
+                                </span>
+                                <span class="meta-views">
+                                    <i class="fa-regular fa-eye"></i> {{ article.views_count }} بازدید
+                                </span>
+                            </div>
+                            <a href="{% url 'portfolio:article_detail' article.slug %}" class="article-read-btn">
+                                مطالعه کامل <i class="fa-solid fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    </article>
+                    {% empty %}
+                    <div class="empty-articles-box">
+                        <div class="empty-icon">
+                            <i class="fa-solid fa-newspaper"></i>
+                        </div>
+                        <h3>مقاله‌ای با این مشخصات یافت نشد</h3>
+                        <p>می‌توانید عبارت جستجو را تغییر دهید یا دسته‌بندی دیگری را انتخاب نمایید.</p>
+                        <a href="{% url 'portfolio:articles_list' %}" class="btn btn-outline btn-sm">
+                            <i class="fa-solid fa-rotate-left"></i> مشاهده همه مقالات
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>© 2026 طراحی و پیاده‌سازی شده برای <strong>{{ settings.full_name }}</strong> | دانشجوی علوم کامپیوتر</p>
+            <div class="footer-links">
+                <a href="{% url 'portfolio:home' %}">صفحه اصلی</a>
+                <span>•</span>
+                <a href="{% url 'portfolio:articles_list' %}">وبلاگ و مقالات</a>
+                <span>•</span>
+                <a href="https://t.me/{{ settings.telegram_bot_username }}" target="_blank" rel="noopener noreferrer">ربات تلگرام</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Android & Mobile Native Floating Glass Bottom Navigation -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="ناوبری سریع موبایل">
+        <a href="{% url 'portfolio:home' %}" class="mobile-nav-item">
+            <div class="mobile-nav-icon"><i class="fa-solid fa-house"></i></div>
+            <span class="mobile-nav-label">خانه</span>
+        </a>
+        <a href="{% url 'portfolio:home' %}#about" class="mobile-nav-item">
+            <div class="mobile-nav-icon"><i class="fa-solid fa-user"></i></div>
+            <span class="mobile-nav-label">درباره من</span>
+        </a>
+        <a href="{% url 'portfolio:home' %}#projects" class="mobile-nav-item">
+            <div class="mobile-nav-icon"><i class="fa-solid fa-cubes"></i></div>
+            <span class="mobile-nav-label">پروژه‌ها</span>
+        </a>
+        <a href="{% url 'portfolio:articles_list' %}" class="mobile-nav-item active">
+            <div class="mobile-nav-icon"><i class="fa-solid fa-newspaper"></i></div>
+            <span class="mobile-nav-label">مقالات</span>
+        </a>
+        <a href="{% url 'portfolio:home' %}#contact" class="mobile-nav-item">
+            <div class="mobile-nav-icon"><i class="fa-solid fa-paper-plane"></i></div>
+            <span class="mobile-nav-label">ارتباط</span>
+        </a>
+    </nav>
+
+    <!-- Three.js CDN for Interactive 3D Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Interactive JavaScript -->
+    <script src="{% static 'js/script.js' %}?v=3.4"></script>
+</body>
+</html>

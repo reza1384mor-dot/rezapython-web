@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود به پنل مدیریت وب‌سایت | Reza.dev</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    
+    <!-- Base CSS & Panel CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+</head>
+<body class="login-body">
+
+    <!-- Background Ambient Glows -->
+    <div class="glow-bg glow-1"></div>
+    <div class="glow-bg glow-2"></div>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <span class="code-bracket">&lt;</span>
+                    <span>Reza Panel</span>
+                    <span class="code-bracket">/&gt;</span>
+                </div>
+                <h2>ورود به پنل مدیریت سایت</h2>
+                <p>برای ویرایش محتوا و صفحه آپدیت وارد شوید.</p>
+            </div>
+
+            {% if messages %}
+            <div class="login-messages">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <span>{{ message }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="POST" class="login-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_username"><i class="fa-solid fa-user"></i> نام کاربری</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password"><i class="fa-solid fa-lock"></i> رمز عبور</label>
+                    {{ form.password }}
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fa-solid fa-right-to-bracket"></i> ورود به پنل
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <a href="{% url 'portfolio:home' %}"><i class="fa-solid fa-arrow-right"></i> بازگشت به صفحه اصلی سایت</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

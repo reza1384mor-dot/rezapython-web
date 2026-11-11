@@ -1,0 +1,97 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}مدیریت مقالات و وبلاگ{% endblock %}
+{% block header_title %}مدیریت مقالات و وبلاگ{% endblock %}
+
+{% block content %}
+<div class="projects-panel">
+    <div class="panel-card-header">
+        <div>
+            <h2><i class="fa-solid fa-newspaper"></i> مقالات و یادداشت‌های تخصصی</h2>
+            <p class="subtitle">می‌توانید مقالات جدید منتشر کنید، ویرایش نمایید، وضعیت انتشار را تغییر دهید یا حذف کنید.</p>
+        </div>
+        <div style="display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap;">
+            <a href="{% url 'portfolio:articles_list' %}" target="_blank" class="btn btn-outline btn-sm">
+                <i class="fa-solid fa-globe"></i> مشاهده آرشیو در سایت
+            </a>
+            <a href="{% url 'portfolio:panel_article_create' %}" class="btn btn-primary">
+                <i class="fa-solid fa-feather-pointed"></i> انتشار مقاله جدید
+            </a>
+        </div>
+    </div>
+
+    <div class="panel-section-card">
+        <div class="table-responsive">
+            <table class="panel-table">
+                <thead>
+                    <tr>
+                        <th>عنوان مقاله</th>
+                        <th>دسته‌بندی</th>
+                        <th>زمان مطالعه</th>
+                        <th>وضعیت</th>
+                        <th>صفحه اصلی</th>
+                        <th>بازدید</th>
+                        <th>تاریخ انتشار</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in articles %}
+                    <tr>
+                        <td>
+                            <i class="{{ article.icon }}" style="margin-left: 6px; color: var(--primary);"></i>
+                            <strong>{{ article.title }}</strong>
+                        </td>
+                        <td>
+                            <span class="badge-status read">{{ article.get_category_display }}</span>
+                        </td>
+                        <td class="text-mono">{{ article.reading_time }} دقیقه</td>
+                        <td>
+                            {% if article.published %}
+                            <span class="badge-status read">منتشر شده</span>
+                            {% else %}
+                            <span class="badge-status unread">پیش‌نویس</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if article.featured %}
+                            <span class="badge-status" style="background: rgba(244, 63, 94, 0.15); color: var(--primary);">ویژه</span>
+                            {% else %}
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">عادی</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-mono">{{ article.views_count }}</td>
+                        <td class="text-mono">{{ article.created_at|date:"Y/m/d" }}</td>
+                        <td>
+                            <div class="table-actions">
+                                <a href="{% url 'portfolio:article_detail' article.slug %}" target="_blank" class="btn-action" title="مشاهده آنلاین در سایت">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                                <a href="{% url 'portfolio:panel_article_edit' article.pk %}" class="btn-action edit" title="ویرایش مقاله">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <form method="POST" action="{% url 'portfolio:panel_article_toggle_publish' article.pk %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-action" style="background:none;border:none;cursor:pointer;" title="{% if article.published %}تغییر به پیش‌نویس{% else %}انتشار فوری{% endif %}">
+                                        <i class="fa-solid {% if article.published %}fa-toggle-on{% else %}fa-toggle-off{% endif %}" style="color: {% if article.published %}var(--accent){% else %}var(--text-muted){% endif %}; font-size: 1.15rem;"></i>
+                                    </button>
+                                </form>
+                                <a href="{% url 'portfolio:panel_article_delete' article.pk %}" class="btn-action delete" title="حذف مقاله">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="empty-table">
+                            هنوز مقاله‌ای منتشر نشده است. با کلیک بر روی دکمه «انتشار مقاله جدید» نخستین مقاله تخصصی خود را منتشر کنید!
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

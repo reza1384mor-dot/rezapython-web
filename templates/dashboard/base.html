@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}پنل مدیریت وب‌سایت{% endblock %} | Reza.dev</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    
+    <!-- Base CSS & Panel CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+</head>
+<body class="panel-body">
+
+    <div class="panel-layout">
+        <!-- Sidebar -->
+        <aside class="panel-sidebar" id="panel-sidebar">
+            <div class="sidebar-header">
+                <a href="{% url 'portfolio:panel_home' %}" class="sidebar-logo">
+                    <span class="code-bracket">&lt;</span>
+                    <span>Reza Panel</span>
+                    <span class="code-bracket">/&gt;</span>
+                </a>
+            </div>
+
+            <div class="user-badge-sidebar">
+                <div class="avatar-icon">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name">{{ request.user.username }}</span>
+                    <span class="user-role">مدیر کل سامانه</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="{% url 'portfolio:panel_home' %}" class="sidebar-link {% if request.resolver_match.url_name == 'panel_home' %}active{% endif %}">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>داشبورد و پیام‌ها</span>
+                </a>
+
+                <a href="{% url 'portfolio:panel_update_settings' %}" class="sidebar-link highlight-link {% if request.resolver_match.url_name == 'panel_update_settings' %}active{% endif %}">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>صفحه آپدیت سایت</span>
+                    <span class="badge-new">مهم</span>
+                </a>
+
+                <a href="{% url 'portfolio:panel_projects' %}" class="sidebar-link {% if 'project' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fa-solid fa-laptop-code"></i>
+                    <span>مدیریت پروژه‌ها</span>
+                </a>
+
+                <a href="{% url 'portfolio:panel_articles' %}" class="sidebar-link {% if 'article' in request.resolver_match.url_name and request.resolver_match.url_name != 'panel_article_create' %}active{% endif %}">
+                    <i class="fa-solid fa-newspaper"></i>
+                    <span>مدیریت مقالات</span>
+                </a>
+
+                <a href="{% url 'portfolio:panel_article_create' %}" class="sidebar-link highlight-link {% if request.resolver_match.url_name == 'panel_article_create' %}active{% endif %}">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                    <span>انتشار مقاله جدید</span>
+                    <span class="badge-new" style="background: var(--accent); color: #fff;">جدید</span>
+                </a>
+
+                <div class="sidebar-divider"></div>
+
+                <a href="{% url 'portfolio:home' %}" target="_blank" class="sidebar-link">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <span>مشاهده سایت عمومی</span>
+                </a>
+
+                <a href="/admin/" target="_blank" class="sidebar-link">
+                    <i class="fa-solid fa-database"></i>
+                    <span>دیتابیس ادمین خام</span>
+                </a>
+
+                <a href="{% url 'portfolio:panel_logout' %}" class="sidebar-link logout-link">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>خروج از حساب</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="panel-main">
+            <!-- Top Header -->
+            <header class="panel-topbar">
+                <button class="panel-toggle-btn" id="panel-toggle-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="topbar-title">
+                    {% block header_title %}مدیریت وب‌سایت شخصی{% endblock %}
+                </div>
+                <div class="topbar-actions">
+                    <a href="{% url 'portfolio:home' %}" target="_blank" class="btn btn-outline btn-sm">
+                        <i class="fa-solid fa-globe"></i> نمایش سایت
+                    </a>
+                </div>
+            </header>
+
+            <!-- Alerts -->
+            {% if messages %}
+            <div class="panel-alerts">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}"></i>
+                    <span>{{ message }}</span>
+                    <button type="button" class="close-alert" onclick="this.parentElement.remove();">&times;</button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Page Body -->
+            <main class="panel-content">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <!-- Toggle Script -->
+    <script>
+        document.getElementById('panel-toggle-btn')?.addEventListener('click', () => {
+            document.getElementById('panel-sidebar')?.classList.toggle('open');
+        });
+    </script>
+</body>
+</html>

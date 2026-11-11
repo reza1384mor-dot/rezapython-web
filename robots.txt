@@ -1,0 +1,56 @@
+# robots.txt for rezapython.ir
+# Generated & Maintained by Agent 8 (SEO & GEO Specialist)
+
+# Standard Search Engines
+User-agent: Googlebot
+Allow: /
+Allow: /articles/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /static/admin/
+
+User-agent: Bingbot
+Allow: /
+Allow: /articles/
+Disallow: /admin/
+Disallow: /api/
+
+# AI Search & Generative Engines (GEO Optimization)
+User-agent: GPTBot
+Allow: /
+Allow: /articles/
+Disallow: /admin/
+
+User-agent: OAI-SearchBot
+Allow: /
+Allow: /articles/
+Disallow: /admin/
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /articles/
+Disallow: /admin/
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /articles/
+Disallow: /admin/
+
+User-agent: Google-Extended
+Allow: /
+Allow: /articles/
+Disallow: /admin/
+
+User-agent: Applebot-Extended
+Allow: /
+Allow: /articles/
+Disallow: /admin/
+
+# Catch-all
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Sitemap Location
+Sitemap: https://rezapython.ir/sitemap.xml

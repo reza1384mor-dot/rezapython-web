@@ -1,0 +1,64 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block header_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="form-container-compact">
+    <div class="panel-section-card">
+        <div class="panel-card-header">
+            <h3><i class="fa-solid fa-code-commit"></i> {{ title }}</h3>
+        </div>
+
+        <form method="POST" class="project-form">
+            {% csrf_token %}
+            <div class="form-item">
+                <label>{{ form.title.label }}</label>
+                {{ form.title }}
+                {% if form.title.errors %}<span class="field-error">{{ form.title.errors }}</span>{% endif %}
+            </div>
+
+            <div class="form-item">
+                <label>{{ form.tech_stack.label }}</label>
+                {{ form.tech_stack }}
+                {% if form.tech_stack.errors %}<span class="field-error">{{ form.tech_stack.errors }}</span>{% endif %}
+            </div>
+
+            <div class="form-item">
+                <label>{{ form.description.label }}</label>
+                {{ form.description }}
+            </div>
+
+            <div class="form-row-2">
+                <div class="form-item">
+                    <label>{{ form.github_url.label }}</label>
+                    {{ form.github_url }}
+                </div>
+                <div class="form-item">
+                    <label>{{ form.live_url.label }}</label>
+                    {{ form.live_url }}
+                </div>
+            </div>
+
+            <div class="form-row-2">
+                <div class="form-item">
+                    <label>{{ form.icon.label }}</label>
+                    {{ form.icon }}
+                </div>
+                <div class="form-item checkbox-item">
+                    <label>{{ form.featured }} {{ form.featured.label }}</label>
+                </div>
+            </div>
+
+            <div class="form-actions-bar">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-check"></i> ذخیره پروژه
+                </button>
+                <a href="{% url 'portfolio:panel_projects' %}" class="btn btn-glass">
+                    انصراف و بازگشت
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

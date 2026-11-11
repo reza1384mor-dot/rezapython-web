@@ -1,0 +1,119 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block header_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="form-container-compact" style="max-width: 950px;">
+    <div class="panel-section-card">
+        <div class="panel-card-header">
+            <div>
+                <h3><i class="fa-solid fa-feather-pointed"></i> {{ title }}</h3>
+                <p class="subtitle">اطلاعات، چکیده و متن مقاله تخصصی خود را وارد نمایید. این صفحه از فرمت‌بندی Markdown و کدهای برنامه‌نویسی پشتیبانی کامل می‌کند.</p>
+            </div>
+            {% if not is_new and article %}
+            <div>
+                <a href="{% url 'portfolio:article_detail' article.slug %}" target="_blank" class="btn btn-outline btn-sm">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> مشاهده آنلاین مقاله
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <form method="POST" class="project-form">
+            {% csrf_token %}
+            
+            <div class="form-item">
+                <label><i class="fa-solid fa-heading"></i> {{ form.title.label }}</label>
+                {{ form.title }}
+                {% if form.title.errors %}<span class="field-error">{{ form.title.errors }}</span>{% endif %}
+            </div>
+
+            <div class="form-row-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                <div class="form-item">
+                    <label><i class="fa-solid fa-folder-tree"></i> {{ form.category.label }}</label>
+                    {{ form.category }}
+                </div>
+                <div class="form-item">
+                    <label><i class="fa-solid fa-clock"></i> {{ form.reading_time.label }}</label>
+                    {{ form.reading_time }}
+                </div>
+                <div class="form-item">
+                    <label><i class="fa-solid fa-icons"></i> {{ form.icon.label }}</label>
+                    {{ form.icon }}
+                </div>
+            </div>
+
+            <div class="form-row-2">
+                <div class="form-item">
+                    <label><i class="fa-solid fa-link"></i> {{ form.slug.label }}</label>
+                    {{ form.slug }}
+                    <small style="color: var(--text-muted); font-size: 0.78rem; margin-top: 4px; display: block;">
+                        اختیاری: در صورت خالی گذاشتن، نامک به‌صورت خودکار و استاندارد از روی عنوان تولید خواهد شد.
+                    </small>
+                </div>
+                <div class="form-item">
+                    <label><i class="fa-solid fa-tags"></i> {{ form.tags.label }}</label>
+                    {{ form.tags }}
+                    <small style="color: var(--text-muted); font-size: 0.78rem; margin-top: 4px; display: block;">
+                        برچسب‌ها را با کاما جدا کنید (مثال: پایتون, جنگو, امنیت, بهینه‌سازی)
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-item">
+                <label><i class="fa-solid fa-align-right"></i> {{ form.summary.label }}</label>
+                {{ form.summary }}
+                {% if form.summary.errors %}<span class="field-error">{{ form.summary.errors }}</span>{% endif %}
+            </div>
+
+            <div class="form-item">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <label><i class="fa-solid fa-file-lines"></i> {{ form.content.label }}</label>
+                    <span style="font-size: 0.78rem; color: var(--secondary);">
+                        <i class="fa-brands fa-markdown"></i> پشتیبانی از سینتکس مارک‌داون و بلوک‌های کد
+                    </span>
+                </div>
+                {{ form.content }}
+                {% if form.content.errors %}<span class="field-error">{{ form.content.errors }}</span>{% endif %}
+                
+                <!-- Markdown Helper Guide -->
+                <div class="editor-help-box" style="margin-top: 8px; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--border-color); border-radius: var(--radius-sm); font-size: 0.8rem; color: var(--text-muted); line-height: 1.6;">
+                    <strong style="color: var(--text-primary);"><i class="fa-solid fa-circle-info"></i> راهنمای نگارش سریع:</strong>
+                    برای تیترها از <code>## تیتر بخش</code>، برای کد پایتون از <code>```python</code> در خط قبل و <code>```</code> در خط بعد، برای لیست از <code>- مورد اول</code> و برای نقل‌قول از <code>> متن</code> استفاده فرمایید.
+                </div>
+            </div>
+
+            <div class="form-row-2" style="background: rgba(255, 255, 255, 0.02); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 0.5rem;">
+                <div class="form-item checkbox-item">
+                    <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer;">
+                        {{ form.published }}
+                        <strong>{{ form.published.label }}</strong>
+                    </label>
+                    <small style="color: var(--text-muted); display: block; margin-top: 3px;">
+                        با غیرفعال کردن این گزینه، مقاله به عنوان پیش‌نویس ذخیره شده و برای عموم نمایش داده نخواهد شد.
+                    </small>
+                </div>
+                <div class="form-item checkbox-item">
+                    <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer;">
+                        {{ form.featured }}
+                        <strong>{{ form.featured.label }}</strong>
+                    </label>
+                    <small style="color: var(--text-muted); display: block; margin-top: 3px;">
+                        این مقاله در بخش ویترین آخرین مقالات صفحه اصلی پورتفولیو قرار می‌گیرد.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-actions-bar" style="margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-check"></i> ذخیره و انتشار مقاله
+                </button>
+                <a href="{% url 'portfolio:panel_articles' %}" class="btn btn-glass">
+                    انصراف و بازگشت به لیست
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

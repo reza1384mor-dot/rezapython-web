@@ -1,0 +1,602 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="emerald">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#080d0a" id="meta-theme-color">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>{{ settings.full_name }} | {{ settings.role_title }}</title>
+    <meta name="description" content="وب‌سایت شخصی و پورتفولیو سه‌بعدی {{ settings.full_name }} - {{ settings.role_title }}">
+    
+    <!-- Google Fonts: Vazirmatn & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Favicon (Zero Blue, Sunset & Violet) -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3.4">
+
+    <!-- SEO Canonical & GEO Enhancements (Agent 8) -->
+    <link rel="canonical" href="https://rezapython.ir/">
+
+    <!-- Structured Data (JSON-LD) for Search & AI Engines -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://rezapython.ir/#website",
+          "url": "https://rezapython.ir/",
+          "name": "Reza Python",
+          "description": "وب‌سایت تخصصی پایتون، جنگو، امنیت شبکه و هوش مصنوعی رضا مرتضوی",
+          "inLanguage": "fa-IR"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://rezapython.ir/#author",
+          "name": "{{ settings.full_name }}",
+          "jobTitle": "{{ settings.role_title }}",
+          "url": "https://rezapython.ir",
+          "sameAs": [
+            "https://t.me/rezapython_bot",
+            "https://rezapython.ir",
+            "{{ settings.github_url }}"
+          ]
+        }
+      ]
+    }
+    </script>
+</head>
+<body>
+
+    <!-- 3D Interactive WebGL Background Canvas -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Top Scroll Progress Bar -->
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Ambient Glow Backgrounds -->
+    <div class="glow-bg glow-1"></div>
+    <div class="glow-bg glow-2"></div>
+
+    <!-- Navigation Header -->
+    <header class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#hero" class="logo">
+                <span class="code-bracket">&lt;</span>
+                <span class="logo-text">Reza.dev</span>
+                <span class="code-bracket">/&gt;</span>
+            </a>
+
+            <nav class="nav-links" id="nav-links">
+                <a href="#hero" class="nav-item active">خانه</a>
+                <a href="#about" class="nav-item">درباره من</a>
+                <a href="#skills" class="nav-item">مهارت‌ها</a>
+                <a href="#projects" class="nav-item">پروژه‌ها</a>
+                <a href="{% url 'portfolio:articles_list' %}" class="nav-item">مقالات</a>
+                <a href="#contact" class="nav-item">ارتباط</a>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Theme Switcher Dropdown -->
+                <div class="theme-switcher-wrapper">
+                    <button class="theme-btn" id="theme-toggle-btn" aria-label="تغییر تم سایت" title="تغییر رنگ و تم">
+                        <i class="fa-solid fa-palette"></i>
+                    </button>
+                    <div class="theme-dropdown" id="theme-dropdown">
+                        <button class="theme-option" data-theme-val="sunset">
+                            <span class="theme-color-dot dot-sunset"></span>
+                            <span>شفق نئونی / غروب</span>
+                        </button>
+                        <button class="theme-option" data-theme-val="light">
+                            <span class="theme-color-dot dot-light"></span>
+                            <span>تم سفید شیشه‌ای</span>
+                        </button>
+                        <button class="theme-option active" data-theme-val="emerald">
+                            <span class="theme-color-dot dot-emerald"></span>
+                            <span>سایبر زمردی</span>
+                        </button>
+                    </div>
+                </div>
+
+                <a href="#contact" class="btn btn-outline btn-sm">ارسال پیام</a>
+                
+                <button class="menu-toggle" id="menu-toggle" aria-label="منوی موبایل">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Global Alert / Messages -->
+    {% if messages %}
+    <div class="messages-container container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}"></i>
+            <span>{{ message }}</span>
+            <button type="button" class="close-alert" onclick="this.parentElement.remove();">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero section" id="hero">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="badge">
+                        <span class="badge-dot"></span>
+                        {{ settings.hero_badge }}
+                    </div>
+                    <h1 class="hero-title">
+                        سلام، من <span class="gradient-text">{{ settings.full_name }}</span> هستم
+                    </h1>
+                    <h2 class="hero-subtitle">
+                        {{ settings.role_title }}
+                    </h2>
+                    <p class="hero-desc">
+                        {{ settings.bio }}
+                    </p>
+
+                    <div class="hero-cta">
+                        <a href="#projects" class="btn btn-primary">
+                            <i class="fa-solid fa-laptop-code"></i> مشاهده پروژه‌ها
+                        </a>
+                        <a href="#contact" class="btn btn-glass">
+                            <i class="fa-regular fa-envelope"></i> راه‌های ارتباطی
+                        </a>
+                    </div>
+
+                    <!-- Quick Social Links -->
+                    <div class="hero-socials">
+                        <a href="https://t.me/{{ settings.telegram_bot_username }}" target="_blank" rel="noopener noreferrer" class="social-icon" title="ربات رسمی تلگرام (@{{ settings.telegram_bot_username }})">
+                            <i class="fa-brands fa-telegram"></i>
+                        </a>
+                        <a href="{{ settings.github_url }}" target="_blank" rel="noopener noreferrer" class="social-icon" title="گیت‌هاب">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        <a href="mailto:{{ settings.email }}" class="social-icon" title="ایمیل مستقیم">
+                            <i class="fa-solid fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <!-- Interactive 3D Terminal Card -->
+                    <div class="terminal-card tilt-card" id="terminal-3d-card">
+                        <div class="terminal-header">
+                            <div class="terminal-buttons">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <span class="terminal-title">reza@security-box:~</span>
+                        </div>
+                        <div class="terminal-body tilt-inner">
+                            <div class="term-line tilt-pop">
+                                <span class="prompt">$</span> <span class="command">whoami</span>
+                            </div>
+                            <p class="term-output tilt-pop">{{ settings.full_name }} - {{ settings.role_title }}</p>
+                            
+                            <div class="term-line tilt-pop">
+                                <span class="prompt">$</span> <span class="command">cat stack.json</span>
+                            </div>
+                            <pre class="term-code tilt-pop">{
+  <span class="key">"engine"</span>: <span class="str">"Django 6.x (Python 3.14)"</span>,
+  <span class="key">"focus"</span>: [<span class="str">"Network Security"</span>, <span class="str">"Web Design"</span>],
+  <span class="key">"contact"</span>: {
+    <span class="key">"email"</span>: <span class="str">"{{ settings.email }}"</span>,
+    <span class="key">"telegram_bot"</span>: <span class="str">"@{{ settings.telegram_bot_username }}"</span>
+  }
+}</pre>
+
+                            <div class="term-line tilt-pop">
+                                <span class="prompt">$</span> <span class="command pulse-cursor">python manage.py runserver</span>
+                            </div>
+                            <p class="term-output success tilt-pop">3D Canvas & WebGL initialized. 0 errors detected.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3D Animated Scroll Down Indicator -->
+            <a href="#about" class="scroll-down-wrapper" aria-label="هدایت به پایین">
+                <div class="scroll-mouse">
+                    <div class="scroll-wheel"></div>
+                </div>
+                <span class="scroll-text">
+                    حرکت به پایین <i class="fa-solid fa-chevron-down"></i>
+                </span>
+            </a>
+        </section>
+
+        <!-- About Section -->
+        <section class="about section" id="about">
+            <div class="container">
+                <div class="section-header reveal-on-scroll">
+                    <span class="section-tag"><i class="fa-solid fa-sparkles"></i> معرفی و تخصص</span>
+                    <h2 class="section-title">درباره من</h2>
+                    <p class="section-subtitle">ترکیب تفکر الگوریتمی علوم کامپیوتر با مهارت‌های پیاده‌سازی بک‌اند و امنیت سایبری</p>
+                </div>
+
+                <div class="about-bento-grid">
+                    <!-- Column 1: Luxury 3D Cyber Bento Profile Card -->
+                    <div class="about-profile-card tilt-card reveal-on-scroll">
+                        <div class="profile-card-badge">
+                            <span class="status-pulse-dot"></span>
+                            <span>آنلاین و در دسترس همکاری</span>
+                        </div>
+                        
+                        <div class="profile-avatar-wrapper tilt-pop">
+                            <div class="avatar-ambient-glow"></div>
+                            <img src="{% static 'img/avatar.png' %}" alt="{{ settings.full_name }}" class="profile-avatar-img">
+                        </div>
+
+                        <div class="profile-info tilt-pop">
+                            <h3 class="profile-name">{{ settings.full_name }}</h3>
+                            <p class="profile-role">{{ settings.role_title }}</p>
+                            
+                            <div class="profile-tags">
+                                <span class="profile-tag"><i class="fa-solid fa-code"></i> پایتون و جنگو</span>
+                                <span class="profile-tag"><i class="fa-solid fa-shield-halved"></i> امنیت شبکه</span>
+                                <span class="profile-tag"><i class="fa-solid fa-graduation-cap"></i> علوم کامپیوتر</span>
+                            </div>
+
+                            <div class="profile-actions">
+                                <a href="https://t.me/{{ settings.telegram_bot_username }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm profile-bot-btn" title="ربات رسمی تلگرام">
+                                    <i class="fa-solid fa-robot"></i> ارتباط با ربات تلگرام
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: The 3 Focus Cards -->
+                    <div class="about-cards-col">
+                        <div class="about-card tilt-card reveal-on-scroll">
+                            <div class="card-icon tilt-pop">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="tilt-pop">دانشجوی علوم کامپیوتر</h3>
+                                <p class="tilt-pop">{{ settings.about_cs }}</p>
+                            </div>
+                        </div>
+
+                        <div class="about-card tilt-card reveal-on-scroll reveal-delay-1">
+                            <div class="card-icon tilt-pop">
+                                <i class="fa-brands fa-python"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="tilt-pop">توسعه بک‌اند با پایتون و جنگو</h3>
+                                <p class="tilt-pop">{{ settings.about_backend }}</p>
+                            </div>
+                        </div>
+
+                        <div class="about-card tilt-card reveal-on-scroll reveal-delay-2">
+                            <div class="card-icon tilt-pop">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="tilt-pop">امنیت شبکه و داده</h3>
+                                <p class="tilt-pop">{{ settings.about_security }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section class="skills section" id="skills">
+            <div class="container">
+                <div class="section-header reveal-on-scroll">
+                    <span class="section-tag"><i class="fa-solid fa-microchip"></i> جعبه ابزار من</span>
+                    <h2 class="section-title">تخصص‌های فنی و ابزارها</h2>
+                    <p class="section-subtitle">ابزارها و فناوری‌های به کار رفته در پروژه‌ها و مسیر پژوهش</p>
+                </div>
+
+                <div class="skills-wrapper">
+                    {% if categories %}
+                        {% for cat in categories %}
+                        <div class="skill-category tilt-card reveal-on-scroll">
+                            <h3 class="category-title tilt-pop">
+                                <i class="{{ cat.icon }}"></i> {{ cat.name }}
+                            </h3>
+                            <div class="skill-tags tilt-pop">
+                                {% for skill in cat.skills.all %}
+                                <span class="skill-chip"><i class="{{ skill.icon }}"></i> {{ skill.name }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Showcase -->
+        <section class="projects section" id="projects">
+            <div class="container">
+                <div class="section-header reveal-on-scroll">
+                    <span class="section-tag"><i class="fa-solid fa-code-branch"></i> کدهای من</span>
+                    <h2 class="section-title">پروژه‌های شاخص</h2>
+                    <p class="section-subtitle">نمونه پروژه‌های توسعه داده شده در حوزه‌های پایتون، جنگو و امنیت شبکه</p>
+                </div>
+
+                <div class="projects-grid">
+                    {% for project in projects %}
+                    <div class="project-card tilt-card reveal-on-scroll">
+                        <div class="project-header tilt-pop">
+                            <div class="folder-icon"><i class="{{ project.icon }}"></i></div>
+                            <div class="project-links">
+                                {% if project.github_url %}
+                                <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer" title="مشاهده در گیت‌هاب"><i class="fa-brands fa-github"></i></a>
+                                {% endif %}
+                                {% if project.live_url %}
+                                <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" title="لینک مستقیم"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <h3 class="project-title tilt-pop">{{ project.title }}</h3>
+                        <p class="project-desc tilt-pop">{{ project.description }}</p>
+                        <div class="project-tech tilt-pop">
+                            {% for tech in project.get_tech_list %}
+                            <span>{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">پروژه‌ای برای نمایش ثبت نشده است.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Latest Articles Showcase Section -->
+        <section class="articles section" id="articles">
+            <div class="container">
+                <div class="section-header reveal-on-scroll">
+                    <span class="section-tag"><i class="fa-solid fa-feather-pointed"></i> وبلاگ و یادداشت‌ها</span>
+                    <h2 class="section-title">آخرین مقالات و آموزش‌های تخصصی</h2>
+                    <p class="section-subtitle">بررسی عمیق مفاهیم پایتون و جنگو، معماری امنیت شبکه، لینوکس و علوم کامپیوتر</p>
+                </div>
+
+                <div class="articles-grid">
+                    {% for article in latest_articles %}
+                    <article class="article-card tilt-card reveal-on-scroll">
+                        <div class="article-card-header">
+                            <span class="article-cat-badge">
+                                <i class="{{ article.icon }}"></i> {{ article.get_category_display }}
+                            </span>
+                            <span class="article-reading-time">
+                                <i class="fa-regular fa-clock"></i> {{ article.reading_time }} دقیقه
+                            </span>
+                        </div>
+
+                        <h3 class="article-card-title">
+                            <a href="{% url 'portfolio:article_detail' article.slug %}">
+                                {{ article.title }}
+                            </a>
+                        </h3>
+
+                        <p class="article-card-summary">
+                            {{ article.summary|truncatechars:140 }}
+                        </p>
+
+                        {% if article.get_tags_list %}
+                        <div class="article-card-tags">
+                            {% for tag in article.get_tags_list %}
+                            <span class="tag-chip">#{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <div class="article-card-footer">
+                            <div class="article-meta-info">
+                                <span class="meta-date">
+                                    <i class="fa-regular fa-calendar"></i> {{ article.created_at|date:"Y/m/d" }}
+                                </span>
+                                <span class="meta-views">
+                                    <i class="fa-regular fa-eye"></i> {{ article.views_count }} بازدید
+                                </span>
+                            </div>
+                            <a href="{% url 'portfolio:article_detail' article.slug %}" class="article-read-btn">
+                                مطالعه کامل <i class="fa-solid fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    </article>
+                    {% empty %}
+                    <div class="empty-articles-box" style="grid-column: 1/-1;">
+                        <p>به‌زودی مقالات تخصصی پایتون، جنگو و امنیت شبکه در این بخش منتشر خواهند شد.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="section-cta-center reveal-on-scroll" style="margin-top: 2.5rem; text-align: center;">
+                    <a href="{% url 'portfolio:articles_list' %}" class="btn btn-outline">
+                        <i class="fa-solid fa-book-open"></i> مشاهده آرشیو تمام مقالات (وبلاگ)
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact section" id="contact">
+            <div class="container">
+                <div class="section-header reveal-on-scroll">
+                    <span class="section-tag"><i class="fa-solid fa-envelope-open-text"></i> هم‌کلام شویم</span>
+                    <h2 class="section-title">راه‌های ارتباط و همکاری</h2>
+                    <p class="section-subtitle">می‌توانید مستقیماً پیام بگذارید یا از طریق شبکه‌های زیر با من در ارتباط باشید</p>
+                </div>
+
+                <div class="contact-grid">
+                    <!-- Direct Contact Channels -->
+                    <div class="contact-cards reveal-on-scroll">
+                        <!-- Email Card -->
+                        <div class="contact-box tilt-card">
+                            <div class="box-icon tilt-pop">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div class="box-info tilt-pop">
+                                <span class="box-label">پست الکترونیک (ایمیل)</span>
+                                <a href="mailto:{{ settings.email }}" class="box-value">{{ settings.email }}</a>
+                            </div>
+                            <button class="copy-btn tilt-pop" id="copy-email-btn" data-email="{{ settings.email }}" title="کپی کردن ایمیل">
+                                <i class="fa-regular fa-copy"></i>
+                                <span class="tooltip" id="copy-tooltip">کپی شد!</span>
+                            </button>
+                        </div>
+
+                        <!-- Telegram Official Bot Card -->
+                        <div class="contact-box highlight-box tilt-card">
+                            <div class="box-icon telegram-icon tilt-pop" style="background: rgba(244, 63, 94, 0.15); color: var(--primary);">
+                                <i class="fa-brands fa-telegram"></i>
+                            </div>
+                            <div class="box-info tilt-pop">
+                                <div class="badge-inline">
+                                    <span class="box-label">ربات رسمی تلگرام (ارتباط مستقیم)</span>
+                                    <span class="soon-badge" style="background: rgba(244, 63, 94, 0.2); color: var(--primary);">آنلاین</span>
+                                </div>
+                                <a href="https://t.me/{{ settings.telegram_bot_username }}" target="_blank" rel="noopener noreferrer" class="box-value">@{{ settings.telegram_bot_username }}</a>
+                                <span class="box-desc" style="font-size: 0.8rem; margin-top: 2px;">ارسال پیام مستقیم به رضا، دریافت سریع رزومه و پاسخگویی خودکار</span>
+                            </div>
+                            <a href="https://t.me/{{ settings.telegram_bot_username }}" target="_blank" rel="noopener noreferrer" class="visit-btn tilt-pop" title="ورود به ربات تلگرام">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+
+                        <!-- Telegram Channel -->
+                        <div class="contact-box highlight-box tilt-card">
+                            <div class="box-icon channel-icon tilt-pop">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <div class="box-info tilt-pop">
+                                <div class="badge-inline">
+                                    <span class="box-label">{{ settings.telegram_channel_title }}</span>
+                                    <span class="soon-badge">{{ settings.telegram_channel_status }}</span>
+                                </div>
+                                <span class="box-desc">{{ settings.telegram_channel_desc }}</span>
+                            </div>
+                            {% if settings.telegram_channel_url %}
+                            <a href="{{ settings.telegram_channel_url }}" target="_blank" rel="noopener noreferrer" class="visit-btn tilt-pop" title="مشاهده کانال">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                            {% else %}
+                            <div class="locked-icon tilt-pop" title="در حال راه‌اندازی">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- GitHub -->
+                        <div class="contact-box tilt-card">
+                            <div class="box-icon github-icon tilt-pop">
+                                <i class="fa-brands fa-github"></i>
+                            </div>
+                            <div class="box-info tilt-pop">
+                                <span class="box-label">گیت‌هاب</span>
+                                <a href="{{ settings.github_url }}" target="_blank" rel="noopener noreferrer" class="box-value">{{ settings.github_url }}</a>
+                            </div>
+                            <a href="{{ settings.github_url }}" target="_blank" rel="noopener noreferrer" class="visit-btn tilt-pop" title="مشاهده پروفایل">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Direct Message Form (Saved to Django DB) -->
+                    <div class="contact-form-card tilt-card reveal-on-scroll reveal-delay-1">
+                        <h3 class="form-title tilt-pop">
+                            <i class="fa-solid fa-paper-plane"></i> ارسال پیام مستقیم
+                        </h3>
+                        <p class="form-desc tilt-pop">پیام شما به صورت امن در دیتابیس ثبت شده و به دست من خواهد رسید.</p>
+                        
+                        <form method="POST" action="/#contact" class="django-form tilt-pop">
+                            {% csrf_token %}
+                            <!-- Anti-Spam Honeypot Field (Hidden from real users) -->
+                            <input type="text" name="website" value="" style="display:none !important;" tabindex="-1" autocomplete="off" aria-hidden="true">
+                            <div class="form-group">
+                                <label for="name">نام و نام خانوادگی <span class="req">*</span></label>
+                                <input type="text" id="name" name="name" required placeholder="مثلاً: علی رضایی">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">ایمیل شما <span class="req">*</span></label>
+                                <input type="email" id="email" name="email" required placeholder="name@example.com" dir="ltr">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject">موضوع پیام</label>
+                                <input type="text" id="subject" name="subject" placeholder="مثلاً: پیشنهاد همکاری، پروژه، مشاوره">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">متن پیام <span class="req">*</span></label>
+                                <textarea id="message" name="message" rows="4" required placeholder="پیام خود را بنویسید..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fa-solid fa-paper-plane"></i> ثبت و ارسال پیام
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>© 2026 طراحی و پیاده‌سازی شده برای <strong>{{ settings.full_name }}</strong> | دانشجوی علوم کامپیوتر</p>
+            <div class="footer-links">
+                <a href="#hero">بازگشت به بالا <i class="fa-solid fa-arrow-up"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Android & Mobile Native Floating Glass Bottom Navigation -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="ناوبری سریع موبایل">
+        <a href="#hero" class="mobile-nav-item active" data-section="hero">
+            <div class="mobile-nav-icon"><i class="fa-solid fa-house"></i></div>
+            <span class="mobile-nav-label">خانه</span>
+        </a>
+        <a href="#about" class="mobile-nav-item" data-section="about">
+            <div class="mobile-nav-icon"><i class="fa-solid fa-user"></i></div>
+            <span class="mobile-nav-label">درباره من</span>
+        </a>
+        <a href="#projects" class="mobile-nav-item" data-section="projects">
+            <div class="mobile-nav-icon"><i class="fa-solid fa-cubes"></i></div>
+            <span class="mobile-nav-label">پروژه‌ها</span>
+        </a>
+        <a href="{% url 'portfolio:articles_list' %}" class="mobile-nav-item" data-section="articles">
+            <div class="mobile-nav-icon"><i class="fa-solid fa-newspaper"></i></div>
+            <span class="mobile-nav-label">مقالات</span>
+        </a>
+        <a href="#contact" class="mobile-nav-item" data-section="contact">
+            <div class="mobile-nav-icon"><i class="fa-solid fa-paper-plane"></i></div>
+            <span class="mobile-nav-label">ارتباط</span>
+        </a>
+    </nav>
+
+    <!-- Three.js CDN for Interactive 3D Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Interactive JavaScript -->
+    <script src="{% static 'js/script.js' %}?v=3.4"></script>
+</body>
+</html>

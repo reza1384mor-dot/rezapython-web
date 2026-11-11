@@ -1,0 +1,69 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}مدیریت پروژه‌ها{% endblock %}
+{% block header_title %}مدیریت پروژه‌ها{% endblock %}
+
+{% block content %}
+<div class="projects-panel">
+    <div class="panel-card-header">
+        <div>
+            <h2><i class="fa-solid fa-laptop-code"></i> پروژه‌های ثبت‌شده</h2>
+            <p class="subtitle">می‌توانید پروژه‌های جدید اضافه کنید یا پروژه‌های قبلی را ویرایش یا حذف نمایید.</p>
+        </div>
+        <div>
+            <a href="{% url 'portfolio:panel_project_create' %}" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i> افزودن پروژه جدید
+            </a>
+        </div>
+    </div>
+
+    <div class="panel-section-card">
+        <div class="table-responsive">
+            <table class="panel-table">
+                <thead>
+                    <tr>
+                        <th>عنوان پروژه</th>
+                        <th>تکنولوژی‌ها</th>
+                        <th>نمایش در سایت</th>
+                        <th>تاریخ ایجاد</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in projects %}
+                    <tr>
+                        <td>
+                            <i class="{{ p.icon }}" style="margin-left: 6px; color: var(--primary);"></i>
+                            <strong>{{ p.title }}</strong>
+                        </td>
+                        <td><code>{{ p.tech_stack }}</code></td>
+                        <td>
+                            {% if p.featured %}
+                            <span class="badge-status read">فعال</span>
+                            {% else %}
+                            <span class="badge-status unread">مخفی</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-mono">{{ p.created_at|date:"Y/m/d" }}</td>
+                        <td>
+                            <div class="table-actions">
+                                <a href="{% url 'portfolio:panel_project_edit' p.pk %}" class="btn-action edit" title="ویرایش">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <a href="{% url 'portfolio:panel_project_delete' p.pk %}" class="btn-action delete" title="حذف">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty-table">هیچ پروژه‌ای یافت نشد. می‌توانید با دکمه بالا پروژه جدید اضافه کنید.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

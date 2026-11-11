@@ -344,7 +344,7 @@ def panel_articles_view(request):
 def panel_article_create_view(request):
     """صفحه اختصاصی انتشار مقاله جدید (Publish Article Page)"""
     if request.method == "POST":
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
             article = form.save()
             messages.success(request, f"مقاله «{article.title}» با موفقیت منتشر و ذخیره شد!")
@@ -366,7 +366,7 @@ def panel_article_edit_view(request, pk):
     """ویرایش مقاله ثبت‌شده"""
     article = get_object_or_404(Article, pk=pk)
     if request.method == "POST":
-        form = ArticleForm(request.POST, instance=article)
+        form = ArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
             form.save()
             messages.success(request, f"مقاله «{article.title}» با موفقیت ویرایش شد!")

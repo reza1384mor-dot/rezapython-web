@@ -23,7 +23,7 @@
     <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
     
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3.4">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3.5">
 
     <!-- SEO Canonical (Agent 8) -->
     <link rel="canonical" href="https://rezapython.ir/articles/">
@@ -152,14 +152,41 @@
                 <div class="articles-grid">
                     {% for article in articles %}
                     <article class="article-card tilt-card">
-                        <div class="article-card-header">
-                            <span class="article-cat-badge">
+                        {% if article.get_poster_url %}
+                        <!-- 🖼️ Custom Designed Poster Banner -->
+                        <div class="article-poster-frame">
+                            <a href="{% url 'portfolio:article_detail' article.slug %}" class="poster-link-overlay" aria-label="{{ article.title }}">
+                                <img src="{{ article.get_poster_url }}" alt="{{ article.title }}" class="article-poster-img" loading="lazy">
+                                <div class="poster-gradient-shade"></div>
+                            </a>
+                            <span class="article-cat-badge poster-float-badge">
                                 <i class="{{ article.icon }}"></i> {{ article.get_category_display }}
                             </span>
-                            <span class="article-reading-time">
+                            <span class="article-reading-time poster-float-time">
                                 <i class="fa-regular fa-clock"></i> {{ article.reading_time }} دقیقه
                             </span>
                         </div>
+                        {% else %}
+                        <!-- ✨ Smart Abstract Tech Banner (No Poster Fallback) -->
+                        <div class="article-poster-frame fallback-poster-frame cat-{{ article.category }}">
+                            <a href="{% url 'portfolio:article_detail' article.slug %}" class="poster-link-overlay" aria-label="{{ article.title }}">
+                                <div class="fallback-mesh-bg">
+                                    <div class="fallback-icon-halo">
+                                        <i class="{{ article.icon }}"></i>
+                                    </div>
+                                    <div class="fallback-grid-dots"></div>
+                                    <span class="fallback-brand-watermark">REZA.DEV</span>
+                                </div>
+                                <div class="poster-gradient-shade"></div>
+                            </a>
+                            <span class="article-cat-badge poster-float-badge">
+                                <i class="{{ article.icon }}"></i> {{ article.get_category_display }}
+                            </span>
+                            <span class="article-reading-time poster-float-time">
+                                <i class="fa-regular fa-clock"></i> {{ article.reading_time }} دقیقه
+                            </span>
+                        </div>
+                        {% endif %}
 
                         <h2 class="article-card-title">
                             <a href="{% url 'portfolio:article_detail' article.slug %}">

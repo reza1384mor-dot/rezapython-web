@@ -2398,6 +2398,250 @@ a {
     transform: translateY(-5px);
 }
 
+/* ============================================================
+   Article Poster & Banner Styling (Zero Blue, Full Responsive)
+   ============================================================ */
+.article-poster-frame {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    border-radius: calc(var(--radius-lg) - 4px);
+    overflow: hidden;
+    margin-bottom: 1.15rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-surface);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    display: block;
+}
+
+.poster-link-overlay {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    z-index: 1;
+}
+
+.article-poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+
+.article-card:hover .article-poster-img {
+    transform: scale(1.06);
+}
+
+.poster-gradient-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 8, 20, 0.2) 0%, rgba(10, 8, 20, 0.05) 40%, rgba(10, 8, 20, 0.82) 100%);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+[data-theme="light"] .poster-gradient-shade {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(20, 15, 30, 0.55) 100%);
+}
+
+.article-card:hover .poster-gradient-shade {
+    opacity: 0.9;
+}
+
+/* Floating Badges on Poster Frame */
+.poster-float-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.poster-float-time {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    background: rgba(18, 11, 36, 0.72);
+    border: 1px solid var(--border-color);
+    padding: 0.3rem 0.65rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="emerald"] .poster-float-time {
+    background: rgba(8, 13, 10, 0.78);
+    color: var(--text-secondary);
+}
+
+[data-theme="light"] .poster-float-time {
+    background: rgba(255, 255, 255, 0.85);
+    color: #0f172a;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================================
+   Smart Abstract Tech Poster Fallback (For Articles Without Poster)
+   ============================================================ */
+.fallback-poster-frame {
+    background: linear-gradient(135deg, rgba(24, 15, 45, 0.85) 0%, rgba(12, 7, 24, 0.95) 100%);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="emerald"] .fallback-poster-frame {
+    background: linear-gradient(135deg, rgba(10, 24, 18, 0.9) 0%, rgba(5, 12, 8, 0.98) 100%);
+}
+
+[data-theme="light"] .fallback-poster-frame {
+    background: linear-gradient(135deg, rgba(245, 240, 252, 0.95) 0%, rgba(235, 230, 248, 0.98) 100%);
+    border-color: rgba(225, 29, 72, 0.15);
+}
+
+.fallback-mesh-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.fallback-icon-halo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    color: var(--primary);
+    background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+    box-shadow: 0 0 30px var(--primary-glow);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    z-index: 1;
+}
+
+[data-theme="emerald"] .fallback-icon-halo {
+    border-color: rgba(16, 185, 129, 0.25);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.35);
+}
+
+[data-theme="light"] .fallback-icon-halo {
+    background: radial-gradient(circle, rgba(225, 29, 72, 0.12) 0%, transparent 75%);
+    border-color: rgba(225, 29, 72, 0.2);
+}
+
+.article-card:hover .fallback-icon-halo {
+    transform: scale(1.12) rotate(4deg);
+    box-shadow: 0 0 45px var(--primary-glow);
+    color: var(--accent);
+}
+
+/* Background Subtle Matrix Dots */
+.fallback-grid-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 16px 16px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+[data-theme="light"] .fallback-grid-dots {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+}
+
+.fallback-brand-watermark {
+    position: absolute;
+    bottom: 8px;
+    left: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    opacity: 0.35;
+    z-index: 1;
+}
+
+/* Category Specific Accent Gradients for Fallback (Zero Blue!) */
+.fallback-poster-frame.cat-python .fallback-icon-halo {
+    color: #10b981;
+    border-color: rgba(16, 185, 129, 0.3);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.35);
+}
+
+.fallback-poster-frame.cat-security .fallback-icon-halo {
+    color: #f43f5e;
+    border-color: rgba(244, 63, 94, 0.3);
+    box-shadow: 0 0 30px rgba(244, 63, 94, 0.35);
+}
+
+.fallback-poster-frame.cat-cs .fallback-icon-halo {
+    color: #c084fc;
+    border-color: rgba(192, 132, 252, 0.3);
+    box-shadow: 0 0 30px rgba(192, 132, 252, 0.35);
+}
+
+.fallback-poster-frame.cat-web .fallback-icon-halo {
+    color: #f59e0b;
+    border-color: rgba(245, 158, 11, 0.3);
+    box-shadow: 0 0 30px rgba(245, 158, 11, 0.35);
+}
+
+/* ============================================================
+   Article Detail Page Poster
+   ============================================================ */
+.article-detail-poster-wrap {
+    width: 100%;
+    margin: 1.8rem 0 2rem 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+    background: var(--bg-surface);
+    position: relative;
+}
+
+.article-detail-poster-img {
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: cover;
+    display: block;
+}
+
+.article-detail-poster-caption {
+    padding: 0.6rem 1rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .article-poster-frame {
+        height: 165px;
+    }
+}
+
 .article-card-header {
     display: flex;
     justify-content: space-between;

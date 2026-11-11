@@ -28,7 +28,7 @@
     <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
     
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3.4">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3.5">
 
     <!-- SEO Canonical & GEO Enhancements (Agent 8) -->
     <link rel="canonical" href="https://rezapython.ir/articles/{{ article.slug }}">
@@ -136,6 +136,16 @@
                     </div>
 
                     <h1 class="article-main-title">{{ article.title }}</h1>
+
+                    {% if article.get_poster_url %}
+                    <!-- Article Main Poster Banner -->
+                    <div class="article-detail-poster-wrap">
+                        <img src="{{ article.get_poster_url }}" alt="{{ article.title }}" class="article-detail-poster-img">
+                        <div class="article-detail-poster-caption">
+                            <i class="fa-solid fa-image"></i> پوستر رسمی یادداشت: {{ article.title }}
+                        </div>
+                    </div>
+                    {% endif %}
 
                     <!-- Summary Box / Lead Paragraph -->
                     {% if article.summary %}

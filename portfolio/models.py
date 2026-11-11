@@ -117,6 +117,8 @@ class Article(models.Model):
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='python', verbose_name="دسته‌بندی موضوعی")
     reading_time = models.PositiveIntegerField(default=5, verbose_name="مدت زمان تخمینی مطالعه (دقیقه)")
     icon = models.CharField(max_length=50, default="fa-solid fa-file-lines", verbose_name="کلاس آیکون FontAwesome")
+    poster = models.ImageField(upload_to='articles/posters/', blank=True, null=True, verbose_name="تصویر پوستر / بنر مقاله (۱۶:۹)")
+    poster_url = models.URLField(blank=True, null=True, verbose_name="آدرس مستقیم اینترنتی پوستر (اختیاری)")
     tags = models.CharField(max_length=250, blank=True, verbose_name="برچسب‌ها (با کاما جدا کنید)")
     published = models.BooleanField(default=True, verbose_name="منتشر شود (نمایش در سایت)")
     featured = models.BooleanField(default=False, verbose_name="مقاله ویژه (نمایش برجسته در صفحه اصلی)")
@@ -151,6 +153,20 @@ class Article(models.Model):
         if not self.tags:
             return []
         return [t.strip() for t in self.tags.split(',') if t.strip()]
+
+    def get_poster_url(self):
+        """بازگرداندن آدرس پوستر بارگذاری‌شده یا لینک مستقیم اینترنتی"""
+        if self.poster:
+            try:
+                return self.poster.url
+            except Exception:
+                pass
+        if self.poster_url:
+            return self.poster_url
+        return None
+
+    def has_poster(self):
+        return bool(self.get_poster_url())
 
     def get_rendered_content(self):
         try:

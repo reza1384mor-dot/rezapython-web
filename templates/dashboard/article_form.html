@@ -20,7 +20,7 @@
             {% endif %}
         </div>
 
-        <form method="POST" class="project-form">
+        <form method="POST" enctype="multipart/form-data" class="project-form">
             {% csrf_token %}
             
             <div class="form-item">
@@ -41,6 +41,30 @@
                 <div class="form-item">
                     <label><i class="fa-solid fa-icons"></i> {{ form.icon.label }}</label>
                     {{ form.icon }}
+                </div>
+            </div>
+
+            <!-- Poster / Banner Section -->
+            <div class="form-row-2" style="background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--border-color); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.2rem;">
+                <div class="form-item">
+                    <label><i class="fa-solid fa-image"></i> {{ form.poster.label }}</label>
+                    {{ form.poster }}
+                    <small style="color: var(--text-muted); font-size: 0.78rem; margin-top: 4px; display: block;">
+                        تصویر بنر یا پوستر مقاله (پیشنهادی: نسبت ۱۶:۹ افقی مثل 1280x720 یا 1920x1080).
+                    </small>
+                    {% if not is_new and article.get_poster_url %}
+                    <div style="margin-top: 0.8rem; display: flex; align-items: center; gap: 0.8rem;">
+                        <img src="{{ article.get_poster_url }}" alt="پوستر فعلی" style="width: 140px; height: 78px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <span style="font-size: 0.8rem; color: var(--accent);"><i class="fa-solid fa-check"></i> پوستر فعال مقاله</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="form-item">
+                    <label><i class="fa-solid fa-globe"></i> {{ form.poster_url.label }}</label>
+                    {{ form.poster_url }}
+                    <small style="color: var(--text-muted); font-size: 0.78rem; margin-top: 4px; display: block;">
+                        یا آدرس مستقیم اینترنتی عکس را وارد نمایید (در صورت عدم آپلود فایل).
+                    </small>
                 </div>
             </div>
 

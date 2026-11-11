@@ -3009,6 +3009,12 @@ a {
     text-align: center;
 }
 
+.article-content-body h3:has(+ table) {
+    text-align: center;
+    margin: 2.6rem 0 1rem 0;
+    color: var(--text-primary);
+}
+
 .article-content-body thead {
     background: linear-gradient(135deg, rgba(56, 189, 248, 0.22) 0%, rgba(99, 102, 241, 0.18) 100%);
 }
